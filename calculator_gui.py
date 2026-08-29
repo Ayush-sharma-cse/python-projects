@@ -1,61 +1,19 @@
-import tkinter as tk
+import streamlit as st
 
-print("program started")
+st.title("Simple Calculator")
 
-# FUNCTIONS
-def click(event):
-    global expression
-    expression = expression + str(event.widget["text"])
-    equation.set(expression)
+num1 = st.number_input("Enter first number", value=0.0)
+num2 = st.number_input("Enter second number", value=0.0)
 
-def clear():
-    global expression
-    expression = ""
-    equation.set("")
+operation = st.selectbox("Choose operation", ["Add", "Subtract", "Multiply", "Divide"])
 
-def equal():
-    global expression
-    try:
-        result = str(eval(expression))
-        equation.set(result)
-        expression = result
-    except:
-        equation.set("Error")
-        expression = ""
-
-# 👇 GUI CODE (OUTSIDE FUNCTIONS)
-root = tk.Tk()
-root.title("Calculator")
-root.geometry("300x400")
-
-expression = ""
-equation = tk.StringVar()
-
-entry = tk.Entry(root, textvariable=equation, font=("Arial",20), bd=10, relief=tk.RIDGE, justify="right")
-entry.pack(fill="both", ipadx=8, ipady=15)
-
-buttons = [
-    ['7','8','9','/'],
-    ['4','5','6','*'],
-    ['1','2','3','-'],
-    ['0','.','=','+']
-]
-
-for row in buttons:
-    frame = tk.Frame(root)
-    frame.pack(expand=True, fill="both")
-
-    for btn in row:
-        button = tk.Button(frame, text=btn, font=("Arial",18))
-        button.pack(side="left", expand=True, fill="both")
-
-        if btn == "=":
-            button.bind("<Button-1>", lambda event: equal())
-        else:
-            button.bind("<Button-1>", click)
-
-clear_btn = tk.Button(root, text="C", font=("Arial",18), command=clear)
-clear_btn.pack(fill="both")
-
-# 👇 VERY IMPORTANT
-root.mainloop()
+if st.button("Calculate"):
+  if operation == "Add":
+    result = num1 + num2
+  elif operation == "Subtract":
+    result = num1 - num2
+  elif operation == "Multiply":
+    result = num1 * num2
+  elif operation == "Divide":
+    result = num1 / num2 if num2 != 0 else "Error (Division by zero)"
+  st.success(f"Result: {result}")
