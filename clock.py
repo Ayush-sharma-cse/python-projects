@@ -1,22 +1,31 @@
-import tkinter as tk
-from time import strftime
+import streamlit as st
+from datetime import datetime
+import time
 
-root = tk.Tk()
-root.title("Digital Clock")
-
-def time():
-    string = strftime('%H:%M:%S %p\n%D')
-    label.config(text=string)
-    label.after(1000, time)
-
-label = tk.Label(
-    root,
-    font=('calibri', 50, 'bold'),
-    background='yellow',
-    foreground='black'
+st.set_page_config(
+    page_title="Digital Clock",
+    page_icon="⏰",
+    layout="centered"
 )
 
-label.pack(anchor='center')
+st.title("⏰ Digital Clock")
 
-time()
-root.mainloop()
+clock = st.empty()
+
+while True:
+    now = datetime.now()
+
+    current_time = now.strftime("%H:%M:%S")
+    current_date = now.strftime("%A, %d %B %Y")
+
+    clock.markdown(
+        f"""
+        <div style="text-align:center; margin-top:50px;">
+            <h1 style="font-size:70px;">{current_time}</h1>
+            <h2>{current_date}</h2>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    time.sleep(1)
